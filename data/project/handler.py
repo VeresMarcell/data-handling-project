@@ -282,7 +282,9 @@ class SQLHandler:
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM {table}"
                        .format(table=table_name if table_name is not None else entity_type.collection_name()))
-        return [entity_type.from_sequence(row) for row in cursor.fetchall()]
+        result = [entity_type.from_sequence(row) for row in cursor.fetchall()]
+        cursor.close()
+        return result
 
     @staticmethod
     def write_entity(entities: list[Entity], connection: MySQLConnection, table_name: str = None,
@@ -324,6 +326,7 @@ class SQLHandler:
                            [entity.to_sequence() for entity in entities])
 
         connection.commit()
+        cursor.close()
 
     @staticmethod
     def read_dataset(dataset_type: Type[Dataset], connection: MySQLConnection) -> Dataset:
