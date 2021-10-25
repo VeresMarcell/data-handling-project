@@ -83,7 +83,7 @@ def main() -> None:
     connection = get_connection()
 
     dataset = None
-    dataset_type = RentalDataset
+    dataset_type = RentalDataset  # TODO change this to your own type
 
     writers = {
         "csv": lambda t: CSVHandler.write_dataset(dataset, t[2]),
@@ -93,10 +93,10 @@ def main() -> None:
     }
 
     readers = {
-        "csv": lambda t: CSVHandler.read_dataset(RentalDataset, t[2]),
-        "xlsx": lambda t: XLSXHandler.read_dataset(RentalDataset, t[2]),
-        "json": lambda t: JSONHandler.read_dataset(RentalDataset, t[2]),
-        "mysql": lambda t: SQLHandler.read_dataset(dataset, connection)
+        "csv": lambda t: CSVHandler.read_dataset(dataset_type, t[2]),
+        "xlsx": lambda t: XLSXHandler.read_dataset(dataset_type, t[2]),
+        "json": lambda t: JSONHandler.read_dataset(dataset_type, t[2]),
+        "mysql": lambda t: SQLHandler.read_dataset(dataset_type, connection)
     }
 
     while True:
@@ -115,11 +115,11 @@ def main() -> None:
             elif tokens[0] == "read":
                 dataset = readers[tokens[1]](tokens)
             elif tokens[0] == "query-1":
-                print("TODO")
+                print("TODO")  # TODO call your first query
             elif tokens[0] == "query-2":
-                print("TODO")
+                print("TODO")  # TODO call your second query
             elif tokens[0] == "query-3":
-                print("TODO")
+                print("TODO")  # TODO call your third query
             else:
                 raise RuntimeError("unknown command")
         except RuntimeError:
