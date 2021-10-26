@@ -60,7 +60,7 @@ class RentalDataset(Dataset):
                 male = random.random() < male_ratio
                 generator = fake if not unique else fake.unique
                 people.append(Person(
-                    "O-" + (str(i).zfill(6)),
+                    "P-" + (str(i).zfill(6)),
                     generator.name_male() if male else generator.name_female(),
                     random.randint(min_age, max_age),
                     male))
