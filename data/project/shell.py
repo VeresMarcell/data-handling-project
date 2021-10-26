@@ -1,5 +1,4 @@
 from mysql.connector import MySQLConnection
-from mysql.connector.errors import Error
 
 from data.project.handler import CSVHandler, JSONHandler, XLSXHandler, SQLHandler
 from data.project.model import RentalDataset
@@ -122,7 +121,7 @@ def main() -> None:
                 print("TODO")  # TODO call your third query
             else:
                 raise RuntimeError("unknown command")
-        except RuntimeError:
+        except Exception:
             print("command cannot be executed")
 
 
