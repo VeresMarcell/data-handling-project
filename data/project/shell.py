@@ -104,6 +104,7 @@ def main() -> None:
             line = input()
             tokens = line.split(" ")
             if tokens[0] == "exit":
+                connection.close()
                 break
             elif tokens[0] == "help":
                 print(help_message())
