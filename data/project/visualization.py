@@ -161,13 +161,11 @@ def distances_by_countries_and_sexes(dataset: RentalDataset) -> None:
     values_female = [values_female[i] for i in non_zero_indices]
 
     x = np.arange(len(countries))  # the label locations
-    width = 0.1  # the width of the bars
+    width = 0.3  # the width of the bars
 
     fig, ax = plt.subplots()
-    rects1 = ax.bar(x - width / 2, values_male, width, label="Males")
-    rects2 = ax.bar(x + width / 2, values_female, width, label="Females")
-
-    print(len(values_female), len(values_female))
+    series_males = ax.bar(x - width / 2, values_male, width, label="Males")
+    series_females = ax.bar(x + width / 2, values_female, width, label="Females")
 
     ax.set_ylabel("Total distance")
     ax.set_title("Countries of airports")
@@ -175,8 +173,8 @@ def distances_by_countries_and_sexes(dataset: RentalDataset) -> None:
     ax.set_xticklabels(countries, rotation=90)
     ax.legend()
 
-    ax.bar_label(rects1, padding=3)
-    ax.bar_label(rects2, padding=3)
+    # ax.bar_label(series_males, padding=3)
+    # ax.bar_label(series_females, padding=3)
 
     fig.tight_layout()
 
