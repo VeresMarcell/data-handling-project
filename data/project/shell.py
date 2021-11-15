@@ -3,6 +3,7 @@ from mysql.connector import MySQLConnection
 from data.project.handler import CSVHandler, JSONHandler, XLSXHandler, SQLHandler
 from data.project.model import RentalDataset
 import mysql
+import visualization
 
 
 def help_message() -> str:
@@ -115,11 +116,17 @@ def main() -> None:
             elif tokens[0] == "read":
                 dataset = readers[tokens[1]](tokens)
             elif tokens[0] == "query-1":
-                print("TODO")  # TODO call your first query
+                visualization.number_of_entries(dataset)
             elif tokens[0] == "query-2":
-                print("TODO")  # TODO call your second query
+                visualization.airports_by_countries(dataset)
             elif tokens[0] == "query-3":
-                print("TODO")  # TODO call your third query
+                visualization.distances_by_types(dataset)
+            elif tokens[0] == "query-4":
+                visualization.distances_by_types_with_limit(dataset)
+            elif tokens[0] == "query-5":
+                visualization.genders_by_ages_heatmap(dataset)
+            elif tokens[0] == "query-6":
+                visualization.distances_by_countries_and_sexes(dataset)
             else:
                 raise RuntimeError("unknown command")
         except Exception:
