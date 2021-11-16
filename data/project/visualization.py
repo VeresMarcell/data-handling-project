@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def number_of_entries(dataset: RentalDataset) -> None:
     properties = ["Person.age", "Car.type"]
     values = [
-        [owner.age for owner in dataset.people],
+        [person.age for person in dataset.people],
         [car.type for car in dataset.cars]
     ]
 
@@ -114,7 +114,7 @@ def distances_by_types_with_limit(dataset: RentalDataset) -> None:
 def genders_by_ages_heatmap(dataset: RentalDataset) -> None:
     genders = ["males", "females"]
     ages = [f"{i * 10}-{(i + 1) * 10 - 1}" for i in range(11)]
-    values = np.zeros((2, 11))
+    values = np.zeros((len(genders), len(ages)))
     for person in dataset.people:
         values[0 if person.male else 1, person.age // 10] += 1
 
