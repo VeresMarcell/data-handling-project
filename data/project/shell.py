@@ -115,17 +115,17 @@ def main() -> None:
                 writers[tokens[1]](tokens)
             elif tokens[0] == "read":
                 dataset = readers[tokens[1]](tokens)
-            elif tokens[0] == "query-1":
+            elif tokens[0] == "query-1": # TODO
                 visualization.number_of_entries(dataset)
-            elif tokens[0] == "query-2":
+            elif tokens[0] == "query-2": # TODO
                 visualization.airports_by_countries(dataset)
-            elif tokens[0] == "query-3":
+            elif tokens[0] == "query-3": # TODO
                 visualization.distances_by_types(dataset)
-            elif tokens[0] == "query-4":
+            elif tokens[0] == "query-4": # it is an extra example
                 visualization.distances_by_types_with_limit(dataset)
-            elif tokens[0] == "query-5":
+            elif tokens[0] == "query-5": # it is an extra example
                 visualization.genders_by_ages_heatmap(dataset)
-            elif tokens[0] == "query-6":
+            elif tokens[0] == "query-6": # it is an extra example
                 visualization.distances_by_countries_and_sexes(dataset)
             else:
                 raise RuntimeError("unknown command")
