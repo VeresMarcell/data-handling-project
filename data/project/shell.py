@@ -1,9 +1,9 @@
 from mysql.connector import MySQLConnection
 
 from data.project.handler import CSVHandler, JSONHandler, XLSXHandler, SQLHandler
-from data.project.model import RentalDataset
+from data.project.model import CompanyDataset
 import mysql
-import visualization
+import data.project.visualization as visualization
 
 
 def help_message() -> str:
@@ -65,9 +65,9 @@ def get_connection() -> MySQLConnection:
     database = input()
 
     return mysql.connector.connect(
-        host=host,
-        user=user,
-        passwd=password,
+        host=host, # remotemysql.com
+        user=user, # HcEDzgO0w7
+        passwd=password, # iFBetQkGwX
         database=database
     )
 
@@ -83,7 +83,7 @@ def main() -> None:
     connection = get_connection()
 
     dataset = None
-    dataset_type = RentalDataset  # TODO change this to your own type
+    dataset_type = CompanyDataset  # TODO change this to your own type
 
     writers = {
         "csv": lambda t: CSVHandler.write_dataset(dataset, t[2]),
@@ -109,18 +109,18 @@ def main() -> None:
                 break
             elif tokens[0] == "help":
                 print(help_message())
-            elif len(tokens) == 5 and tokens[0] == "generate":
-                dataset = dataset_type.generate(int(tokens[1]), int(tokens[2]), int(tokens[3]), int(tokens[4]))
+            elif len(tokens) == 4 and tokens[0] == "generate":
+                dataset = dataset_type.generate(int(tokens[1]), int(tokens[2]), int(tokens[3]))
             elif tokens[0] == "write":
                 writers[tokens[1]](tokens)
             elif tokens[0] == "read":
                 dataset = readers[tokens[1]](tokens)
             elif tokens[0] == "query-1": # TODO
-                visualization.number_of_entries(dataset)
+                visualization.avg_age_by_company(dataset)
             elif tokens[0] == "query-2": # TODO
-                visualization.airports_by_countries(dataset)
+                visualization.employees_by_companies(dataset)
             elif tokens[0] == "query-3": # TODO
-                visualization.distances_by_types(dataset)
+                visualization.distribution_of_paygrades(dataset)
             elif tokens[0] == "query-4": # it is an extra example
                 visualization.distances_by_types_with_limit(dataset)
             elif tokens[0] == "query-5": # it is an extra example

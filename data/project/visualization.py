@@ -1,58 +1,62 @@
 import math
 
-from data.project.model import RentalDataset
+from data.project.model import CompanyDataset
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-def number_of_entries(dataset: RentalDataset) -> None:
-    properties = ["Person.age", "Car.type"]
-    values = [
-        [person.age for person in dataset.people],
-        [car.type for car in dataset.cars]
-    ]
+def avg_age_by_company(dataset: CompanyDataset) -> None:
+    companies_num = {}
+    emp_age = {}
+    avg_age = []
+    for person in dataset.people:
+        if person.company_name not in companies_num:
+            companies_num[person.company_name] = 1
+        elif person.company_name in companies_num:
+            companies_num[person.company_name] += 1
+    for company in companies_num:
+        if company not in emp_age.keys():
+            emp_age[company] = 0
+    for person in dataset.people:
+        emp_age[person.company_name] += person.age
+    for c in companies_num.keys():
+        avg_age.append(int(emp_age[c] / companies_num[c]))
 
-    total_length = [len(value) for value in values]
-    unique_length = [len(set(value)) for value in values]
 
-    x = np.arange(len(properties))  # the label locations
-    width = 0.35  # the width of the bars
+    x = np.arange(len(companies_num.keys()))  # the label locations
+    width = 0.15  # the width of the bars
 
     fig, ax = plt.subplots()
-    series_total = ax.bar(x - width / 2, total_length, width, label="Total")
-    series_unique = ax.bar(x + width / 2, unique_length, width, label="Unique")
-
-    ax.set_ylabel("Number of entities")
-    ax.set_title("Number of total and unique values")
+    series_total = ax.bar(x, avg_age, width, label="Average age")
+    ax.set_ylabel("Average age")
+    ax.set_title("Average age by company")
     ax.set_xticks(x)
-    ax.set_xticklabels(properties)
+    ax.set_xticklabels(companies_num.keys(), rotation=45)
     ax.legend()
 
-    ax.bar_label(series_total, padding=3)
-    ax.bar_label(series_unique, padding=3)
-
+    ax.bar_label(series_total)
     fig.tight_layout()
 
     plt.show()
 
 
-def airports_by_countries(dataset: RentalDataset) -> None:
-    countries = list({airport.country for airport in dataset.airports})
-    values = [0 for _ in countries]
-    for airport in dataset.airports:
-        values[countries.index(airport.country)] += 1
+def employees_by_companies(dataset: CompanyDataset) -> None:
+    companies = list(set({person.company_name for person in dataset.people}))
+    values = [0 for _ in companies]
+    for person in dataset.people:
+        values[companies.index(person.company_name)] += 1
 
-    x = np.arange(len(countries))  # the label locations
+    x = np.arange(len(companies))  # the label locations
     width = 0.35  # the width of the bars
 
     fig, ax = plt.subplots()
-    series = ax.bar(x - width / 2, values, width)
+    series = ax.bar(x , values, width)
 
     # Add some text for labels, title and custom x-axis tick labels, etc.
-    ax.set_ylabel("Number of airports")
-    ax.set_title("Number of airports per countries")
+    ax.set_ylabel("Number of employees")
+    ax.set_title("Number of employees per company")
     ax.set_xticks(x)
-    ax.set_xticklabels(countries, rotation=90)
+    ax.set_xticklabels(companies, rotation=45)
     ax.bar_label(series)
 
     ax.tick_params(axis="both", which="major", labelsize=10)
@@ -62,15 +66,19 @@ def airports_by_countries(dataset: RentalDataset) -> None:
     plt.show()
 
 
-def distances_by_types(dataset: RentalDataset) -> None:
-    types = list({car.type for car in dataset.cars})
-    values = [0 for _ in types]
-    for transaction in dataset.transactions:
-        car = next(car for car in dataset.cars if car.plate == transaction.car)
-        values[types.index(car.type)] += transaction.length
+def distribution_of_paygrades(dataset: CompanyDataset) -> None:
+    paygrade = list(set({job.pay_grade for job in dataset.jobs}))
+    values = [0 for _ in paygrade]
+    percentages = []
+    for job in dataset.jobs:
+        values[paygrade.index(job.pay_grade)] += 1
+    for i in range(len(values)):
+        percentages.append((values[i]/sum(values))*100)
+
+
 
     fig1, ax = plt.subplots()
-    ax.pie(values, labels=types, autopct="%1.1f%%", startangle=90, rotatelabels=True, pctdistance=0.7)
+    ax.pie(percentages, labels=paygrade, autopct="%1.1f%%", startangle=90, rotatelabels=True, pctdistance=0.7)
     ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
 
     ax.tick_params(axis="both", which="major", labelsize=8)
@@ -78,7 +86,7 @@ def distances_by_types(dataset: RentalDataset) -> None:
     plt.show()
 
 
-def distances_by_types_with_limit(dataset: RentalDataset) -> None:
+def distances_by_types_with_limit(dataset: CompanyDataset) -> None:
     types = list({car.type for car in dataset.cars})
     values = [0 for _ in types]
     for transaction in dataset.transactions:
@@ -111,7 +119,7 @@ def distances_by_types_with_limit(dataset: RentalDataset) -> None:
     plt.show()
 
 
-def genders_by_ages_heatmap(dataset: RentalDataset) -> None:
+def genders_by_ages_heatmap(dataset: CompanyDataset) -> None:
     genders = ["males", "females"]
     ages = [f"{i * 10}-{(i + 1) * 10 - 1}" for i in range(11)]
     values = np.zeros((len(genders), len(ages)))
@@ -141,7 +149,7 @@ def genders_by_ages_heatmap(dataset: RentalDataset) -> None:
     plt.show()
 
 
-def distances_by_countries_and_sexes(dataset: RentalDataset) -> None:
+def distances_by_countries_and_sexes(dataset: CompanyDataset) -> None:
     countries = list({airport.country for airport in dataset.airports})
     values_male = [0 for _ in countries]
     values_female = [0 for _ in countries]

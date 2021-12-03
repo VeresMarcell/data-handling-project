@@ -359,6 +359,6 @@ class SQLHandler:
         for entity_type in reversed(dataset.entity_types()):
             cursor.execute(f"DROP TABLE IF EXISTS {entity_type.collection_name()}")
 
-        for entity_type in dataset.entity_types():
+        for entity_type in reversed(dataset.entity_types()): # originally not reversed
             SQLHandler.write_entity(dataset.entities()[entity_type], connection,
                                     table_name=entity_type.collection_name())
