@@ -82,6 +82,7 @@ def distribution_of_paygrades(dataset: CompanyDataset) -> None:
     ax.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
 
     ax.tick_params(axis="both", which="major", labelsize=8)
+    plt.title("Distribution of pay grades between all employees")
 
     plt.show()
 
